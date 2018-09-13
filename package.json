@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/nitharios/lycanthrope/issues"
   },
-  "homepage": "https://github.com/nitharios/lycanthrope#readme"
+  "homepage": "https://github.com/nitharios/lycanthrope#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "synapsepay": "^0.4.1"
+  }
 }
