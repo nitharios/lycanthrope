@@ -1,23 +1,25 @@
+require('dotenv').config();
+
 const express = require('express');
 const router = express.Router();
 
-const synapseAPI = require('./synapseAPI');
+const Users = require('./Users');
 
 const routes = {
-  nodes: {
-    worker: synapseAPI
-  },
-  subnets: {
-    worker: synapseAPI
-  },
-  transactions: {
-    worker: synapseAPI
-  },
-  transcriptions: {
-    worker: synapseAPI
-  },
+  // nodes: {
+  //   worker: ''
+  // },
+  // subnets: {
+  //   worker: ''
+  // },
+  // transactions: {
+  //   worker: ''
+  // },
+  // transcriptions: {
+  //   worker: ''
+  // },
   users: {
-    worker: synapseAPI
+    worker: Users
   },
 }
 

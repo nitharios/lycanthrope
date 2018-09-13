@@ -1,24 +1,9 @@
-const SynapsePay = require('synapsepay');
 const {
-  Clients,
+  client,
+  FINGERPRINT,
   Helpers,
   Users
-} = SynapsePay;
-
-require('dotenv').config();
-
-const {
-  CLIENT_ID,
-  CLIENT_SECRET,
-  FINGERPRINT,
-  API
-} = process.env;
-
-const client = new Clients(
-  CLIENT_ID,
-  CLIENT_SECRET,
-  false
-)
+} = require('../workers/synapseAPI');
 
 const express = require('express');
 const router = express.Router();
