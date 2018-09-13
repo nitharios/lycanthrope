@@ -91,7 +91,7 @@ router.route('/:userID')
   Users.get(
     client,
     options,
-    (err, usersRes) => {
+    (err, user) => {
       if (err) {
         return res.json({
           status: err.status,
@@ -103,7 +103,7 @@ router.route('/:userID')
         status: 200,
         success: true,
         message: 'User successfully found',
-        data: usersRes.json
+        data: user.json
       });
     }
   )
