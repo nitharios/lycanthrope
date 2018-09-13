@@ -110,28 +110,39 @@ router.route('/:userID')
 
   const documentPayload = {
     documents: [
-      req.body.documents
+      {
+        email: req.body.email,
+        phone_number: req.body.phoneNumber,
+        ip: Helpers.getUserIP(),
+        name: req.body.name,
+        entity_type: req.body.entityType,
+        entity_scope: req.body.entityScope
+      }
     ]
   }
 
   Users.get(
     client,
-    options
-    (err, user => {
+    options,
+    (err, user) => {
       if (err) {
         return res.json(err);
       }
-
+      
       user.addDocuments(
         documentPayload,
-        (err, addDocRes => {
+        (err, addDocRes) => {
+          if (err) {
+            return res.json(err);
+          }
           return res.json(addDocRes);
-        })
+        }
       )
-    })
+    }
   )
 })
 .put((req, res) => {
+  return res.json(req.body.documents);
   const options = {
     _id: req.params.userID,
     fingerprint: FINGERPRINT,
@@ -147,22 +158,23 @@ router.route('/:userID')
 
   Users.get(
     client,
-    options(err, user => {
+    options,
+    (err, user) => {
       if (err) {
         return res.json(err);
       }
 
       user.update(
         userUpdatePayload,
-        (err, updateDocRes => {
+        (err, updateDocRes) => {
           if (err) {
             return res.json(err);
           }
 
           return res.json(updateDocRes);
-        })
+        }
       )
-    })
+    }
   )
 })
 
