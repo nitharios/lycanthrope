@@ -5,9 +5,18 @@ const {
   Users
 } = SynapsePay;
 
+require('dotenv').config();
+
+const {
+  CLIENT_ID,
+  CLIENT_SECRET,
+  FINGERPRINT,
+  API
+} = process.env;
+
 const client = new Clients(
-  process.env.CLIENT_ID,
-  process.env.CLIENT_SECRET,
+  CLIENT_ID,
+  CLIENT_SECRET,
   false
 )
 
@@ -57,12 +66,11 @@ router.route('/')
 
   Users.create(
     client,
-    process.env.FINGERPRINT,
+    FINGERPRINT,
     Helpers.getUserIP(),
     payload,
     (err, usersRes) => {
       if (err) {
-        console.log(err);
         return res.json(err);
       }
 
@@ -75,7 +83,7 @@ router.route('/:userID')
 .get((req, res) => {
   const options = {
     _id: req.params.userID,
-    fingerprint: '1234',
+    fingerprint: FINGERPRINT,
     ip_address: Helpers.getUserIP(),
     full_dehydrate: 'yes'
   }
@@ -95,7 +103,7 @@ router.route('/:userID')
 .post((req, res) => {
   const options = {
     _id: req.params.userID,
-    fingerprint: '1234',
+    fingerprint: FINGERPRINT,
     ip_address: Helpers.getUserIP(),
     full_dehydrate: 'yes'
   }
@@ -126,7 +134,7 @@ router.route('/:userID')
 .put((req, res) => {
   const options = {
     _id: req.params.userID,
-    fingerprint: '1234',
+    fingerprint: FINGERPRINT,
     ip_address: Helpers.getUserIP(),
     full_dehydrate: 'yes'
   }
@@ -150,10 +158,12 @@ router.route('/:userID')
           if (err) {
             return res.json(err);
           }
-          
+
           return res.json(updateDocRes);
         })
       )
     })
   )
 })
+
+module.exports = router;
