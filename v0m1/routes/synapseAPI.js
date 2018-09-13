@@ -37,12 +37,18 @@ router.route('/')
     options,
     (err, usersRes) => {
       if (err) {
-        console.log('Users error', err);
-        return res.json(err);
+        return res.json({
+          status: err.status,
+          success: false,
+          message: JSON.parse(err.response.text).error.en
+        });
       }
 
-      console.log('Users', usersRes)
-      return res.json(usersRes);
+      return res.json({
+        status: usersRes.http_code,
+        success: true,
+        message: 'Users successfully returned'
+      });
     }
   )
 })
@@ -71,10 +77,18 @@ router.route('/')
     payload,
     (err, usersRes) => {
       if (err) {
-        return res.json(err);
+        return res.json({
+          status: err.status,
+          success: false,
+          message: JSON.parse(err.response.text).error.en
+        });
       }
 
-      return res.json(usersRes);
+      return res.json({
+        status: 200,
+        success: true,
+        message: 'User creation successful'
+      });
     }
   )
 })
@@ -93,10 +107,18 @@ router.route('/:userID')
     options,
     (err, usersRes) => {
       if (err) {
-        return res.json(err);
+        return res.json({
+          status: err.status,
+          success: false,
+          message: JSON.parse(err.response.text).error.en
+        });
       }
 
-      return res.json(usersRes);
+      return res.json({
+        status: 200,
+        success: true,
+        message: 'User found'
+      });
     }
   )
 })
@@ -108,15 +130,23 @@ router.route('/:userID')
     full_dehydrate: 'yes'
   }
 
+  const {
+    email,
+    phoneNumber,
+    name,
+    entityType,
+    entityScope
+  } = req.body
+
   const documentPayload = {
     documents: [
       {
-        email: req.body.email,
-        phone_number: req.body.phoneNumber,
+        email: email,
+        phone_number: phoneNumber,
         ip: Helpers.getUserIP(),
-        name: req.body.name,
-        entity_type: req.body.entityType,
-        entity_scope: req.body.entityScope
+        name: name,
+        entity_type: entityType,
+        entity_scope: entityScope
       }
     ]
   }
@@ -126,23 +156,35 @@ router.route('/:userID')
     options,
     (err, user) => {
       if (err) {
-        return res.json(err);
+        return res.json({
+          status: err.status,
+          success: false,
+          message: JSON.parse(err.response.text).error.en
+        });
       }
       
       user.addDocuments(
         documentPayload,
         (err, addDocRes) => {
           if (err) {
-            return res.json(err);
+            return res.json({
+              status: err.status,
+              success: false,
+              message: JSON.parse(err.response.text).error.en
+            });
           }
-          return res.json(addDocRes);
+
+          return res.json({
+            status: 200,
+            success: true,
+            message: 'Document creation successful'
+          });
         }
       )
     }
   )
 })
 .put((req, res) => {
-  return res.json(req.body.documents);
   const options = {
     _id: req.params.userID,
     fingerprint: FINGERPRINT,
@@ -150,9 +192,24 @@ router.route('/:userID')
     full_dehydrate: 'yes'
   }
 
+  const {
+    email,
+    phoneNumber,
+    name,
+    entityType,
+    entityScope
+  } = req.body
+
   const userUpdatePayload = {
     documents: [
-      req.body.documents
+      {
+        email: email,
+        phone_number: phoneNumber,
+        ip: Helpers.getUserIP(),
+        name: name,
+        entity_type: entityType,
+        entity_scope: entityScope
+      }
     ]
   }
 
@@ -161,17 +218,29 @@ router.route('/:userID')
     options,
     (err, user) => {
       if (err) {
-        return res.json(err);
+        return res.json({
+          status: err.status,
+          success: false,
+          message: JSON.parse(err.response.text).error.en
+        });
       }
 
       user.update(
         userUpdatePayload,
         (err, updateDocRes) => {
-          if (err) {
-            return res.json(err);
+          if (err) {            
+            return res.json({
+              status: err.status,
+              success: false,
+              message: JSON.parse(err.response.text).error.en
+            });
           }
 
-          return res.json(updateDocRes);
+          return res.json({
+            status: 200,
+            success: true,
+            message: 'Document update successful'
+          });
         }
       )
     }
