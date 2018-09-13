@@ -28,11 +28,12 @@ router.route('/')
           message: JSON.parse(err.response.text).error.en
         });
       }
-
+      return res.json(usersRes);
       return res.json({
         status: usersRes.http_code,
         success: true,
-        message: 'User list successfully returned'
+        message: 'User list successfully returned',
+        data: usersRes.users
       });
     }
   )
@@ -98,11 +99,11 @@ router.route('/:userID')
           message: JSON.parse(err.response.text).error.en
         });
       }
-
       return res.json({
         status: 200,
         success: true,
-        message: 'User successfully found'
+        message: 'User successfully found',
+        data: usersRes.json
       });
     }
   )
