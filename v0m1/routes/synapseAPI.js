@@ -47,7 +47,7 @@ router.route('/')
       return res.json({
         status: usersRes.http_code,
         success: true,
-        message: 'Users successfully returned'
+        message: 'User list successfully returned'
       });
     }
   )
@@ -117,7 +117,7 @@ router.route('/:userID')
       return res.json({
         status: 200,
         success: true,
-        message: 'User found'
+        message: 'User successfully found'
       });
     }
   )
