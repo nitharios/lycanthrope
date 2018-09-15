@@ -8,6 +8,8 @@ const {
 const express = require('express');
 const router = express.Router();
 
+let usersDB = [];
+
 router.route('/')
 .get((req, res) => {
   const options = {
@@ -28,7 +30,15 @@ router.route('/')
           message: JSON.parse(err.response.text).error.en
         });
       }
+      
+      usersDB = usersRes.users.map((val, index) => {
+        val.id = index;
+        return val;
+      })
 
+      console.log(usersDB);
+      
+      
       return res.json({
         status: usersRes.http_code,
         success: true,
@@ -70,6 +80,9 @@ router.route('/')
         });
       }
 
+      // simulate user creation in client database
+      addUserToDB(JSON.parse(JSON.stringify(usersRes.json)));
+      
       return res.json({
         status: 200,
         success: true,
@@ -232,5 +245,13 @@ router.route('/:userID')
     }
   )
 })
+
+/*************** Helper Functions  ******************/
+
+function addUserToDB(userData) {
+  usersDB.push(userData);
+  // simulate creation of index id
+  usersDB[usersDB.length - 1].id = usersDB.length - 1;
+}
 
 module.exports = router;
