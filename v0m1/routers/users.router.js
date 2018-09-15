@@ -28,7 +28,7 @@ router.route('/')
           message: JSON.parse(err.response.text).error.en
         });
       }
-      return res.json(usersRes);
+
       return res.json({
         status: usersRes.http_code,
         success: true,
