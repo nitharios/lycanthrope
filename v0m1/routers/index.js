@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 
-const Users = require('./Users');
+const Users = require('./users.router');
 
 const routes = {
   // nodes: {
