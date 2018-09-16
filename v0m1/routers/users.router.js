@@ -31,13 +31,12 @@ router.route('/')
         });
       }
       
-      usersDB = usersRes.users.map((val, index) => {
-        val.id = index;
-        return val;
-      })
-
-      console.log(usersDB);
-      
+      if (usersDB.length === 0) {
+        usersDB = usersRes.users.map((val, index) => {
+          val.id = index;
+          return val;
+        })
+      }
       
       return res.json({
         status: usersRes.http_code,
@@ -95,7 +94,7 @@ router.route('/')
 router.route('/:userID')
 .get((req, res) => {
   const options = {
-    _id: req.params.userID,
+    _id: usersDB[req.params.userID]._id,
     fingerprint: FINGERPRINT,
     ip_address: Helpers.getUserIP(),
     full_dehydrate: 'yes'
@@ -123,7 +122,7 @@ router.route('/:userID')
 })
 .post((req, res) => {
   const options = {
-    _id: req.params.userID,
+    _id: usersDB[req.params.userID]._id,
     fingerprint: FINGERPRINT,
     ip_address: Helpers.getUserIP(),
     full_dehydrate: 'yes'
@@ -173,6 +172,8 @@ router.route('/:userID')
             });
           }
 
+          updateUserInDB(addDocRes.json, req.params.userID);
+
           return res.json({
             status: 200,
             success: true,
@@ -185,7 +186,7 @@ router.route('/:userID')
 })
 .put((req, res) => {
   const options = {
-    _id: req.params.userID,
+    _id: usersDB[req.params.userID]._id,
     fingerprint: FINGERPRINT,
     ip_address: Helpers.getUserIP(),
     full_dehydrate: 'yes'
@@ -235,6 +236,8 @@ router.route('/:userID')
             });
           }
 
+          updateUserInDB(updateDocRes.json, req.params.userID);
+
           return res.json({
             status: 200,
             success: true,
@@ -252,6 +255,14 @@ function addUserToDB(userData) {
   usersDB.push(userData);
   // simulate creation of index id
   usersDB[usersDB.length - 1].id = usersDB.length - 1;
+}
+
+function updateUserInDB(updatedUserData, index) {
+  for (const key in updatedUserData) {
+    if (usersDB[index].hasOwnProperty(updatedUserData)) {
+      usersDB[index][key] = updatedUserData[key];
+    }
+  }
 }
 
 module.exports = router;
