@@ -184,7 +184,7 @@ router.route('/:userID')
     }
   )
 })
-.put((req, res) => {
+.put((req, res) => {  
   const options = {
     _id: usersDB[req.params.userID]._id,
     fingerprint: FINGERPRINT,

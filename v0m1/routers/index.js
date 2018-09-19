@@ -6,6 +6,7 @@ const router = express.Router();
 const Users = require('./users.router');
 
 const routes = {
+  /* routes can be built out later on as project expands */
   // nodes: {
   //   worker: ''
   // },
