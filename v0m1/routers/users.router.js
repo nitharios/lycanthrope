@@ -11,6 +11,7 @@ const router = express.Router();
 let usersDB = [];
 
 router.route('/')
+// GET all client's users
 .get((req, res) => {  
   const options = {
     ip_address: Helpers.getUserIP(),
@@ -47,6 +48,7 @@ router.route('/')
     }
   )
 })
+// CREATE a new user
 .post((req, res) => {
   const payload = {
     logins: [
@@ -92,6 +94,7 @@ router.route('/')
 })
 
 router.route('/:userID')
+// GET a user by ID 
 .get((req, res) => {
   const options = {
     _id: usersDB[req.params.userID]._id,
@@ -120,6 +123,7 @@ router.route('/:userID')
     }
   )
 })
+// CREATE documents for user
 .post((req, res) => {
   const options = {
     _id: usersDB[req.params.userID]._id,
@@ -149,6 +153,8 @@ router.route('/:userID')
     ]
   }
 
+  // GET request to validate user exists in client database
+  // not necessary in full application if user is pre-validated
   Users.get(
     client,
     options,
@@ -184,6 +190,7 @@ router.route('/:userID')
     }
   )
 })
+// UPDATE documents for user
 .put((req, res) => {  
   const options = {
     _id: usersDB[req.params.userID]._id,
@@ -213,6 +220,7 @@ router.route('/:userID')
     ]
   }
 
+  // not necessary in full application if user is pre-validated
   Users.get(
     client,
     options,
@@ -251,6 +259,8 @@ router.route('/:userID')
 
 /*************** Helper Functions  ******************/
 
+// these functions simulate how a client may add or update a user in their own database
+// implementation is dependent on client specifications
 function addUserToDB(userData) {
   usersDB.push(userData);
   // simulate creation of index id

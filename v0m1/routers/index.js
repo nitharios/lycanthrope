@@ -24,7 +24,7 @@ const routes = {
   },
 }
 
-// build routes
+// build routes dynamically
 for (const key in routes) {
   router.use(`/${key}`, routes[key].worker)
 }
