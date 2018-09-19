@@ -12,6 +12,8 @@ let usersDB = [];
 
 router.route('/')
 .get((req, res) => {
+  console.log('GET', req);
+  
   const options = {
     ip_address: Helpers.getUserIP(),
     page: '',
